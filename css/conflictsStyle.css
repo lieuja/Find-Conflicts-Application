@@ -1,0 +1,65 @@
+﻿html, body, #mapDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+    }
+
+#container {
+    width: 100%; 
+    height: 100%;
+}
+
+#topPane {
+    height: 6%;
+}
+
+#centerPane {
+    height: 85%;
+    border-top: 5px solid #424242;
+    border-bottom: 5px solid #424242;
+}
+
+#bottomPane {
+
+}
+
+td {
+    width: 20%;
+}
+
+#geocoder, #legend, #changeBasemap, #findConflicts {
+    cursor: pointer;
+    margin-left: 25%;
+}
+
+#legend, #changeBasemap, #findConflicts {
+    margin-left: 40%;
+}
+
+#legend {
+    background-image: url(../images/legend.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 32px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+#changeBasemap {
+    background-image: url(../images/changeBasemap.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 32px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+#findConflicts {
+    background-image: url(../images/findConflicts.png);
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 32px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+

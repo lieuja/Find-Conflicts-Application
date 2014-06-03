@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title></title>
+
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.9/js/esri/css/esri.css" />
+    <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.9/js/dojo/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" type="text/css" href="css/conflictsStyle.css" />
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body class="claro">
+    <script src="//js.arcgis.com/3.9compact/"></script>
+    <script src="js/application/mainApp.js"></script>
+    <script src="js/application/functions/geocoder.js"></script>
+    <script src="js/application/functions/legend.js"></script>
+    <script src="js/application/functions/changeBasemap.js"></script>
+    <script src="js/application/functions/findConflicts.js"></script>
+    <script>
+        var dojoConfig = {
+            async: true,
+            packages: [            
+                {
+                    name: "app",
+                    location: location.pathname.replace(/[^\/]+$/, '') + "js/app"
+                }
+            ]
+        };
+    </script>
+
+    <div id="container" data-dojo-type="dijit/layout/BorderContainer">
+        <div id="topPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
+            <table>
+                <tr id="toolBar"> 
+                    <td>
+                        <div id="geocoder"></div>
+                    </td>
+                    <td>
+                        <div id="legend">Legend</div>
+                    </td>
+                    <td>
+                        <div id="changeBasemap">Change Basemap</div>
+                    </td>
+                    <td>
+                        <div id="findConflicts">Find Conflicts</div>
+                    </td>
+                </tr>
+            </table>
+                
+            
+        </div>
+        <div id="centerPane" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center'">
+            <div id="mapDiv"></div>
+        </div>
+        <div id="bottomPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'bottom'">Bottom pane</div>
+    </div>
+
+</body>
+</html>
