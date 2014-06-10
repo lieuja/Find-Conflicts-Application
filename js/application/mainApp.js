@@ -15,10 +15,13 @@ require([
     "dijit/form/DateTextBox",
     "dijit/form/Button",
     "esri/dijit/BasemapGallery",
+    "esri/dijit/Geocoder",
+    "dojo/fx",
+    "dojo/fx/easing",
     "dijit/form/HorizontalSlider",
     "dijit/form/HorizontalRule",
     "dijit/form/HorizontalRuleLabels",
-    "dijit/form/TextBox",    
+    "dijit/form/TextBox",
     "dojo/domReady!"
 ],
 function (
@@ -36,7 +39,10 @@ function (
     ComboBox,
     DateTextBox,
     Button,
-    BasemapGallery
+    BasemapGallery,
+    Geocoder,
+    coreFx,
+    easing
     ) {
     //parser.parse();
     map = new Map("mapDiv", {
@@ -71,18 +77,18 @@ function (
 
     var forOrganization = new Memory({
         data: [
-            {name:"Alabama", id:"AL"},
-            {name:"Alaska", id:"AK"},
-            {name:"American Samoa", id:"AS"},
-            {name:"Arizona", id:"AZ"},
-            {name:"Arkansas", id:"AR"},
-            {name:"Armed Forces Europe", id:"AE"},
-            {name:"Armed Forces Pacific", id:"AP"},
-            {name:"Armed Forces the Americas", id:"AA"},
-            {name:"California", id:"CA"},
-            {name:"Colorado", id:"CO"},
-            {name:"Connecticut", id:"CT"},
-            {name:"Delaware", id:"DE"}
+            { name: "Alabama", id: "AL" },
+            { name: "Alaska", id: "AK" },
+            { name: "American Samoa", id: "AS" },
+            { name: "Arizona", id: "AZ" },
+            { name: "Arkansas", id: "AR" },
+            { name: "Armed Forces Europe", id: "AE" },
+            { name: "Armed Forces Pacific", id: "AP" },
+            { name: "Armed Forces the Americas", id: "AA" },
+            { name: "California", id: "CA" },
+            { name: "Colorado", id: "CO" },
+            { name: "Connecticut", id: "CT" },
+            { name: "Delaware", id: "DE" }
         ]
     });
 
@@ -130,17 +136,38 @@ function (
         dijit.byId("conflictsDialog").show();
     });
 
-    
-    console.log(GeocoderWidget);
-    //var geocoder = new GeocoderWidget({ map: map }, "search");
-    //geocoder.startup();
+    on(dom.byId("changeBasemap"), "click", function (e) {
+        if (domStyle.get(dom.byId("basemapGalleryContainer"), "display") === "block") {
 
-    //var BasemapWidget = new BasemapWidget ({ map: map }, "changeBasemap");
-    //BasemapWidget.startup();
+            coreFx.wipeOut({
+                node: "basemapGalleryContainer",
+                duration: 800,
+                easing: easing.expoOut
+            }).play();
+            domStyle.set(dom.byId("basemapGalleryContainer"), "display", "");
+        } else {
+
+            coreFx.wipeIn({
+                node: "basemapGalleryContainer",
+                duration: 800,
+                easing: easing.expoOut
+            }).play();
+            domStyle.set(dom.byId("basemapGalleryContainer"), "display", "block");
+        }
+    });
 
     var basemapGallery = new BasemapGallery({
         showArcGISBasemaps: true,
         map: map
-    }, "changeBasemap");
+    }, "basemapGallery");
+
+    var geocoder = new Geocoder({
+        arcgisGeocoder: {
+            placeholder: "find address"
+        },
+        autoComplete: true,
+        map: map,
+    }, 'search');
+    geocoder.startup();
 
 });

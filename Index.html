@@ -28,26 +28,25 @@
                         <div id="search"></div>
                     </td>
                     <td>
-                        <div id="legend"><i class="fa fa-list"></i> Legend</div>
+                        <div id="legend"><i class="fa fa-list fa-lg"></i> Legend</div>
                     </td>
                     <td>
-                        <div style="position:absolute; right:20px; top:10px; z-Index:9000;">
-                            <div data-dojo-type="dijit/TitlePane" data-dojo-props="title:'Switch Basemap', closable:false,  open:false">
-                                <div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;">
-                                    <div id="changeBasemap">Change Basemap</div>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="changeBasemap"><i class="fa fa-qrcode fa-lg"></i> Change Basemap</div>
                     </td>
                     <td>
-                        <div id="findConflicts"><i class="fa fa-crosshairs"></i> Find Conflicts</div>
+                        <div id="findConflicts"><i class="fa fa-crosshairs fa-lg"></i> Find Conflicts</div>
                     </td>
                 </tr>
             </table>
         </div>
 
-        <div id="centerPane" data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center'">
+        <div id="centerPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
             <div id="mapDiv">
+                <div id="basemapGalleryContainer" style="display:none;">
+                    <div id="basemapInnerContainer">
+                        <div id="basemapGallery"></div>
+                    </div>
+                </div>
                 <div id="conflictsDialog" data-dojo-type="dijit/Dialog" title="Find Conflicts">
 
                     <div style="width: 850px; height: 300px;">
@@ -148,12 +147,15 @@
                     </div>
                 </div>
                 <!--<div data-dojo-type="dijit/TitlePane" data-dojo-props="title: 'Legend', region: 'bottom', style: 'height: 150px;'" id="legendContainer">asdf</div>-->
-
+                
             </div>
+            
             <!--<div data-dojo-type="dijit/TitlePane" data-dojo-props="title: 'Legend', region: 'bottom', style: 'height: 150px;'" id="legendContainer">asdf</div>-->
             <!--<div id="legendContainer" style="position:absolute; bottom:10px; width:100%;"></div>-->
+            <div id="legendContainer" style="height:40%; width:100%;"></div>
         </div>
-        <div id="legendContainer" style="position:absolute; bottom:3px; width:100%;"></div>
+        
+        <!--<div id="legendContainer" style="position:absolute; bottom:3px; width:100%;"></div>-->
         <!--<div data-dojo-type="dijit/TitlePane" data-dojo-props="title: 'Legend', region: 'bottom', style: 'height: 150px;'" id="legendContainer">asdf</div>-->
         <!--<div id="legendContainer" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'bottom'">Bottom pane</div>-->
     </div>

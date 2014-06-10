@@ -11,6 +11,7 @@
 
 #topPane {
     height: 6%;
+    overflow: hidden;
 }
 
 #centerPane {
@@ -35,7 +36,7 @@ td {
     align-content:center;
 }
 
-#search:hover, #legend:hover, #changeBasemap:hover, #findConflicts:hover {
+#legend:hover, #changeBasemap:hover, #findConflicts:hover {
     /*border: 2px solid #a1a1a1;*/
     /*padding: 10px 40px;*/ 
     background-color: #dddddd;
@@ -57,9 +58,9 @@ td {
 }
 
 #changeBasemap {
-    background-image: url(../images/changeBasemap.png);
+    /*background-image: url(../images/changeBasemap.png);
     background-position: left center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;*/
     padding-left: 32px;
     padding-top: 16px;
     padding-bottom: 16px;
@@ -105,4 +106,19 @@ td {
 
 #findConflictsBtn {
     
+}
+
+#basemapGalleryContainer {
+    position:absolute;
+    left:100px;
+    top: 7px;
+    width: 1130px;
+    height: 150px;
+    z-index:99999;
+    background-color: #dddddd;
+    border-radius: 15px;
+}
+
+#basemapInnerContainer {
+    margin:15px;
 }

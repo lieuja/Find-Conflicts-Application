@@ -43,13 +43,18 @@ function (
                     map: map,
                 }, 'locate');
                 geocoder.startup();
-                //map.on("load", enableSpotlight);
+                map.on("load", this.enableSpotlight);
 
-                //geocoder.on("select", showLocation);
-                //geocoder.on("select", removeSpotlight);
+                geocoder.on("select", this.showLocation);
+                geocoder.on("select", this.removeSpotlight);
             } else {
                 console.error("This map does not exist.");
             }
+        },
+
+        enableSpotlight: function () {
+            var html = "<div id='spotlight' class='spotlight'></div"
+            domConstruct.place(html, dom.byId("map_container"), "first");
         },
 
         showLocation: function (evt) {
@@ -86,10 +91,7 @@ function (
             });
         },
 
-        enableSpotlight: function () {
-            var html = "<div id='spotlight' class='spotlight'></div"
-            domConstruct.place(html, dom.byId("map_container"), "first");
-        },
+        
 
         removeSpotlight: function () {
             query(".spotlight").removeClass("spotlight-active");
