@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.9/js/esri/css/esri.css" />
     <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.9/js/dojo/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.9/js/dgrid/css/dgrid.css" />
     <link rel="stylesheet" type="text/css" href="css/conflictsStyle.css" />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -19,8 +20,9 @@
 
 </head>
 <body class="claro">
-
+    <!-- the whole body container -->
     <div id="container" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters: false">
+        <!-- top pane: tool bar -->
         <div id="topPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
             <table>
                 <tr id="toolBar">
@@ -39,22 +41,24 @@
                 </tr>
             </table>
         </div>
-
+        <!-- center pane: map, basemap, legend, find conflicts -->
         <div id="centerPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+            <!-- map -->
             <div id="mapDiv">
+                <!-- basemap gallery -->
                 <div id="basemapGalleryContainer" style="display:none;">
                     <div id="basemapInnerContainer">
                         <div id="basemapGallery"></div>
                     </div>
                 </div>
+                <!-- find conflicts dialog -->
                 <div id="conflictsDialog" data-dojo-type="dijit/Dialog" title="Find Conflicts">
-
                     <div style="width: 850px; height: 300px;">
-
                         <table>
                             <tr>
+                                <!-- For -->
                                 <td class="conflictsBorder">
-                                    For
+                                    <div class="conflictsTitle"> For</div>
                                     <table class="conflictsSpacing">
                                         <tr>
                                             <td>Organization:</td>
@@ -66,8 +70,9 @@
                                         </tr>
                                     </table>
                                 </td>
+                                <!-- In -->
                                 <td class="conflictsBorder">
-                                    In
+                                    <div class="conflictsTitle"> In</div>
                                     <table class="conflictsSpacing">
                                         <tr>
                                             <td>Organization:</td>
@@ -81,8 +86,9 @@
                                 </td>
                             </tr>
                             <tr>
+                                <!-- Date Range -->
                                 <td class="conflictsBorder">
-                                    Date Range
+                                    <div class="conflictsTitle"> Date Range</div>
                                     <table class="conflictsSpacing">
                                         <tr>
                                             <td style="text-align:right;">To:</td>
@@ -96,8 +102,9 @@
                                         </tr>
                                     </table>
                                 </td>
+                                <!-- Distance Slider -->
                                 <td class="conflictsBorder">
-                                    Conflict Search Distance
+                                    <div class="conflictsTitle"> Conflict Search Distance</div>
                                     <table class="conflictsSpacing">
                                         <tr>
                                             <td>
@@ -137,30 +144,25 @@
                             </tr>
                         </table>
                     </div>
+                    <!-- Find Conflicts Submit button -->
                     <div><button data-dojo-type="dijit/form/Button" type="submit" id="findConflictsBtn">Find Conflicts</button></div>
+                    <!-- Find Conflicts Cancel button -->
                     <div class="dijitDialogPaneActionBar">
                         <button id="cancel"></button>
-                        <!--<button data-dojo-type="dijit/form/Button" type="button" id="cancel">-->
-                        <!--data-dojo-props="onClick:function(){conflictsDialog.hide();}"-->
-                        <!--Close
-                        </button>-->
                     </div>
                 </div>
-                <!--<div data-dojo-type="dijit/TitlePane" data-dojo-props="title: 'Legend', region: 'bottom', style: 'height: 150px;'" id="legendContainer">asdf</div>-->
                 
             </div>
             
-            <!--<div data-dojo-type="dijit/TitlePane" data-dojo-props="title: 'Legend', region: 'bottom', style: 'height: 150px;'" id="legendContainer">asdf</div>-->
-            <!--<div id="legendContainer" style="position:absolute; bottom:10px; width:100%;"></div>-->
-            <div id="legendContainer" style="height:40%; width:100%;"></div>
         </div>
+        <!-- Data Grid -->
         
-        <!--<div id="legendContainer" style="position:absolute; bottom:3px; width:100%;"></div>-->
-        <!--<div data-dojo-type="dijit/TitlePane" data-dojo-props="title: 'Legend', region: 'bottom', style: 'height: 150px;'" id="legendContainer">asdf</div>-->
-        <!--<div id="legendContainer" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'bottom'">Bottom pane</div>-->
+        </div>
+    <div id="bottomPane" style="display:none; bottom:200px">
+        <!--data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'bottom'"-->
+        <div id="dgrid"></div>
     </div>
-
-
+    <!-- dojo config -->
     <script>
         var dojoConfig = {
             async: true,
