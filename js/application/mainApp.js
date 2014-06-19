@@ -24,6 +24,7 @@ require([
     "dgrid/Keyboard",
     "dgrid/Selection",
     "esri/tasks/Geoprocessor",
+    "esri/dijit/HomeButton",
 
     "dijit/form/HorizontalSlider",
     "dijit/form/HorizontalRule",
@@ -55,7 +56,8 @@ function (
     declare,
     Keyboard,
     Selection,
-    Geoprocessor
+    Geoprocessor,
+    HomeButton
     ) {
     //parser.parse();
 
@@ -67,6 +69,11 @@ function (
         zoom: 6,
         basemap: "streets"
     });
+    //map home button
+    var home = new HomeButton({
+        map: map
+    }, "HomeButton");
+    home.startup();
 
     //geocoder tool
     var geocoder = new Geocoder({
