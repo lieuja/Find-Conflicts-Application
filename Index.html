@@ -20,26 +20,27 @@
 
 </head>
 <body class="claro">
+    <!-- Had to put the Geocoder widget here in order for search results to work properly -->
+    <div id="search"></div>
     <!-- the whole body container -->
     <div id="container" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters: false">
-        <!-- top pane: tool bar -->
+        <!-- top pane: tool bar -->        
         <div id="topPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
-            <table>
-                <tr id="toolBar">
-                    <td>
-                        <div id="search"></div>
-                    </td>
-                    <td>
-                        <div id="legend"><i class="fa fa-list fa-lg"></i> Legend</div>
-                    </td>
-                    <td>
-                        <div id="changeBasemap"><i class="fa fa-qrcode fa-lg"></i> Change Basemap</div>
-                    </td>
-                    <td>
-                        <div id="findConflicts"><i class="fa fa-crosshairs fa-lg"></i> Find Conflicts</div>
-                    </td>
-                </tr>
-            </table>
+            <div id="toolBar">
+                <table>
+                    <tr>
+                        <td>
+                            <div id="legend"><center><i class="fa fa-list fa-lg"></i> Legend</center></div>
+                        </td>
+                        <td>
+                            <div id="changeBasemap"><center><i class="fa fa-qrcode fa-lg"></i> Change Basemap</center></div>
+                        </td>
+                        <td>
+                            <div id="findConflicts"><center><i class="fa fa-crosshairs fa-lg"></i> Find Conflicts</center></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <!-- center pane: map, basemap, legend, find conflicts -->
         <div id="centerPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
@@ -112,12 +113,12 @@
                                                      style="width:400px;"
                                                      name="horizontalSlider"
                                                      data-dojo-type="dijit/form/HorizontalSlider"
-                                                     data-dojo-props="value:6,
-                             minimum: -10,
-                             maximum:10,
-                             discreteValues:11,
-                             intermediateChanges:true,
-                             showButtons:false">
+                                                     data-dojo-props="value:7,
+                                                     minimum: 0,
+                                                     maximum: 500,
+                                                     discreteValues:11,
+                                                     intermediateChanges:true,
+                                                     showButtons:false">
 
                                                     <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="topDecoration"
                                                         style="height:1.5em;font-size:75%;color:gray;">
@@ -155,13 +156,29 @@
             </div>
             
         </div>
-        <!-- Data Grid -->
-        
+
+        <div id="leftPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left'">
+            <div id="legendDiv">
+                <table>
+                    <tr>
+                        <td>Legend</td>
+                    </tr>
+                    <tr>
+                        <td>Stuff goes in here</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-    <div id="bottomPane" style="display:none; bottom:200px">
-        <!--data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'bottom'"-->
-        <div id="dgrid"></div>
-    </div>
+
+        <!-- Data Grid -->
+        <div>
+            <div id="resultsGridTab" style="width:50px; height:20px; background-color:gray; position:absolute;">Results</div>
+            <div id="bottomPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'bottom'">
+                <div id="dgrid"></div>
+            </div>
+        </div>
+        </div>
+    
     <!-- dojo config -->
     <script>
         var dojoConfig = {

@@ -2,11 +2,25 @@
       padding: 0;
       margin: 0;
       height: 100%;
+      border:0;
+      width:100%;
     }
+
+#mapDiv_root {
+    width:100% !important;
+    height:100% !important;
+}
 
 #container {
     width: 100%; 
     height: 100%;
+}
+
+#search {
+    position: absolute;
+    left:10%;
+    top:2.5%;
+    z-index:999999;
 }
 
 #topPane {
@@ -14,22 +28,40 @@
     overflow: hidden;
 }
 
+#toolBar {
+    margin-left: 25% !important;
+}
+
 #centerPane {
     height: 100%;
     width:100%;
     border-top: 5px solid #424242;
     border-bottom: 5px solid #424242;
+    padding:0;
 }
 
 #bottomPane {
-    /*height:20%;*/
+    height:20%;
+    overflow: hidden;
+    z-index: 99999 !important;
+    /*display:none;*/
+    /*visibility:hidden;*/
+}
+
+
+#leftPane {
+    width:15%;
+    height:100%;
+    border-top: 5px solid #424242;
+    border-bottom: 5px solid #424242;
+    border-right: 1px solid #424242;
 }
 
 td {
     width: 20%;
 }
 
-#search, #legend, #changeBasemap, #findConflicts {
+#legend, #changeBasemap, #findConflicts {
     cursor: pointer;
     margin-left: 25%;    
     align-items:center;
@@ -79,39 +111,16 @@ div.esriGeocoderResults {
     padding-bottom: 16px;
 }
 
-.spotlight {
-        z-index:-1;
-        position:absolute;
-        left:50%;
-        top:50%;
-        border-radius:50%;
-        opacity:0;
-        box-shadow:
-        inset rgba(0,0,0,0.25) 0px 0px 20px 20px,
-        rgba(0,0,0,0.25) 0px 0px 0px 1000px;
-        transition:all 1000ms;
-        -moz-transition:all 1000ms;
-        -webkit-transition:all 1000ms;
-      }
-      .spotlight-active {
-        z-index:2;
-        opacity:1;
-      }
-
-.style1 { background-color: #7c7c7c; color: #ffbf00; border: 1px solid #ffbf00; padding: 40px;}
-
-.style2 {height: 70%;}
-
 .conflictsBorder {
     border: 1px solid;
-    background-color: #C8C8C8;
-    border-radius: 8px;
+    background-color: #CCCCCC;
+    border-radius: 5px;
 }
 
 .conflictsTitle {
     border: 0px;
     background-color: #8C8C8C;
-    border-radius: 8px;
+    border-radius: 1px;
 }
 
 .conflictsSpacing {
@@ -135,4 +144,118 @@ div.esriGeocoderResults {
 
 #basemapInnerContainer {
     margin:15px;
+}
+
+#resultsGridTab {
+    width:70px !important; 
+    height:25px !important; 
+    background-color:#ddd !important; 
+    position:absolute;
+    left:17%;
+    top:74.5%;
+    z-index:99999;  
+    border-radius: 1px;
+    text-align:center;
+    border:2px solid #424242;
+    cursor:pointer;
+}
+
+#resultsGridTab:hover {
+    background-color:#424242 !important;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid white;
+    color:white;
+}
+
+#legendDiv {
+    border: 1px solid;
+}
+
+#esriGeocoderResults {
+    z-index:999999 !important;
+}
+
+
+
+
+
+
+
+
+@import "dgrid/css/dgrid.css";
+
+.dgrid-column-name {
+   width: 20em;
+}
+
+#my-grid .dgrid-column-name {
+   width: 20em;
+}
+
+.field-name {
+   width: 20em;
+}
+
+.dgrid { /* this grid itself */
+   width: 100%;  /* the grid will be 50% of the surrounding page or element */
+}
+.dgrid-column-name {
+   width: 200px; /* this column will use 200px */
+}
+.dgrid-column-name {
+   width: auto; /*  this column will use whatever space remains (this is the default, so doesn't really need to be specified)*/
+}
+
+.dgrid-column-name {
+   background-color: blue;
+   color: red;
+   font-weight: bold;
+}
+
+.dgrid-cell {
+   width: 80px; /* make all the columns 80px wide*/
+}
+ 
+.dgrid-column-name {
+   width: 50px; /* except the name column should be 50px wide*/
+}
+
+.dgrid-cell-padding {
+   padding: 5px;
+}
+
+.dgrid {
+    height: auto;
+}
+.dgrid .dgrid-scroller {
+    position: relative;
+    overflow: visible;
+}
+
+.dgrid .dgrid-scroller {
+    position: relative;
+    max-height: 200px;
+    overflow: auto;
+}
+
+.dgrid-cell {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dgrid-row-odd {
+    background: #DFDFDF;
+}
+
+.dgrid-row-even {
+    background: #C9C9C9;
+}
+
+.dgrid-cell {
+    border: none;
+}
+
+.dgrid-selected {
+    background: #6697E0; /* Make selected rows be gray */
 }

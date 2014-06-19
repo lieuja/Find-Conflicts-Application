@@ -20,6 +20,10 @@ require([
     "dojo/fx/easing",
     "dgrid/Grid",
     "dijit/registry",
+    "dojo/_base/declare",
+    "dgrid/Keyboard",
+    "dgrid/Selection",
+    "esri/tasks/Geoprocessor",
 
     "dijit/form/HorizontalSlider",
     "dijit/form/HorizontalRule",
@@ -47,9 +51,16 @@ function (
     coreFx,
     easing,
     Grid,
-    registry
+    registry,
+    declare,
+    Keyboard,
+    Selection,
+    Geoprocessor
     ) {
     //parser.parse();
+
+    gp = new Geoprocessor("http://bmajor2.esri.com/arcgis/rest/directories/arcgisoutput/wssc_jdp/WSSCFindConflicts_GPServer/wssc_jdp_WSSCFindConflicts/WSSCFindConflicts");
+
     //map content
     map = new Map("mapDiv", {
         center: [-80, 38.485],
@@ -60,7 +71,7 @@ function (
     //geocoder tool
     var geocoder = new Geocoder({
         arcgisGeocoder: {
-            placeholder: "find address"
+            placeholder: "Find Address"
         },
         autoComplete: true,
         map: map,
@@ -69,49 +80,65 @@ function (
 
     //click legend tool
     on(dom.byId("legend"), "click", function (e) {
-        var centerPane = registry.byId("centerPane");
-        var bottomPane = registry.byId("bottomPane");
-
+        //if leftPane is displayed, hide leftPane and adjust others on legend onClick 
+        if (domStyle.get(dom.byId("leftPane"), "display") === "block") {
+            domStyle.set(dom.byId("leftPane"), "display", "none");            
+            domStyle.set(dom.byId("centerPane"), "width", "100%");
+            domStyle.set(dom.byId("centerPane"), "left", "0");
+            domStyle.set(dom.byId("resultsGridTab"), "left", "2%");
+        }
+            //else show leftPane and adjust others
+        else {
+            domStyle.set(dom.byId("leftPane"), "display", "block");            
+            domStyle.set(dom.byId("centerPane"), "width", "84%");
+            domStyle.set(dom.byId("centerPane"), "left", "16.3%");
+            domStyle.set(dom.byId("resultsGridTab"), "left", "17%");
+        }
+    });
+    
+    //click results tab
+    on(dom.byId("resultsGridTab"), "click", function (e) {
+        //if bottomPane is displayed, hide bottomPane and adjust others on resultsGridTab onClick 
         if (domStyle.get(dom.byId("bottomPane"), "display") === "block") {
-            //console.log("shown");
-
-            coreFx.wipeOut({
-                node: "bottomPane",
-                duration: 800,
-                easing: easing.expoOut
-            }).play();
             domStyle.set(dom.byId("bottomPane"), "display", "none");
-            centerPane.resize({ h: 900 });
-            bottomPane.resize({ h: 0 });
-        } else {
-            //console.log("none");
-            coreFx.wipeIn({
-                node: "bottomPane",
-                duration: 800,
-                easing: easing.expoOut
-            }).play();
+            domStyle.set(dom.byId("resultsGridTab"), "top", "96.5%");
+            domStyle.set(dom.byId("centerPane"), "height", "91.3%");
+            domStyle.set(dom.byId("leftPane"), "height", "89.5%");
+        }
+            //else show bottomPane and adjust others
+        else {
             domStyle.set(dom.byId("bottomPane"), "display", "block");
-            //registry.byId("bottomPane").resize({h: 400, w:400});
-            centerPane.resize({ h: 600 });
-            bottomPane.resize({ h: 0 });
+            domStyle.set(dom.byId("resultsGridTab"), "top", "75.4%");
+            domStyle.set(dom.byId("centerPane"), "height", "70%");
+            domStyle.set(dom.byId("leftPane"), "height", "68.2%");
         }
     });
 
     //data grid    
     var data = [
-        { first: "Bob", last: "Barker", age: 89 },
-        { first: "Vanna", last: "White", age: 55 },
-        { first: "Pat", last: "Sajak", age: 65 }
+        { department: "MC DOT", projectId: "AAABBB", conflictDpt: "WSSC", conflictProject:"Main St Dig", contact:"John Doe (222) 222-2222" },
+        { department: "MC DOT", projectId: "AAABBB", conflictDpt: "PG DPW", conflictProject:"12-13-14", contact:"John Doe (222) 222-2222" },
+        { department: "MC DOT", projectId: "CCCDDD", conflictDpt: "WSSC", conflictProject:"Main St Dig", contact:"John Doe (222) 222-2222" },        
+        { department: "MC DOT", projectId: "CCCDDD", conflictDpt: "WSSC", conflictProject: "Main St Dig", contact: "John Doe (222) 222-2222" },
+        { department: "MC DOT", projectId: "CCCDDD", conflictDpt: "WSSC", conflictProject: "Main St Dig", contact: "John Doe (222) 222-2222" },
+        { department: "MC DOT", projectId: "CCCDDD", conflictDpt: "WSSC", conflictProject: "Main St Dig", contact: "John Doe (222) 222-2222" },
+        { department: "MC DOT", projectId: "CCCDDD", conflictDpt: "WSSC", conflictProject: "Main St Dig", contact: "John Doe (222) 222-2222" },
+        { department: "MC DOT", projectId: "CCCDDD", conflictDpt: "WSSC", conflictProject: "Main St Dig", contact: "John Doe (222) 222-2222" },
     ];
 
-    var grid = new Grid({
+    var CustomGrid = declare([Grid, Keyboard, Selection]);
+
+    var grid = new CustomGrid({
         columns: {
-            first: "First Name",
-            last: "Last Name",
-            age: "Age"
-        }
+            department: "Department",
+            projectId: "Project ID",
+            conflictDpt: "Conflict Dpt.",
+            conflictProject: "Conflicting Project",
+            contact: "Contact"
+        },
+        selectionMode: "single",
+        cellNavigation: false
     }, "dgrid");
-    console.log(grid);
     grid.renderArray(data);
 
     

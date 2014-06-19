@@ -66,8 +66,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\conflictsStyle.css" />
-    <Content Include="css\font-awesome.css" />
-    <Content Include="css\font-awesome.min.css" />
     <Content Include="images\changeBasemap.png" />
     <Content Include="images\findConflicts.png" />
     <Content Include="images\legend.png" />
