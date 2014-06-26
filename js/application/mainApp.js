@@ -25,8 +25,22 @@ require([
     "dgrid/Selection",
     "esri/tasks/Geoprocessor",
     "esri/dijit/HomeButton",
+    "esri/layers/ArcGISDynamicMapServiceLayer",
+    "dijit/form/FilteringSelect",
+    "dijit/form/Select",
+    "dojo/_base/window",
+    "dijit/form/TextBox",
 
     "dijit/form/HorizontalSlider",
+    "esri/layers/FeatureLayer",
+    "esri/graphic", 
+    "esri/tasks/FeatureSet",
+    "dojo/_base/array",
+    "esri/config",
+    "esri/dijit/Legend",
+    "esri/IdentityManager",
+    "esri/ServerInfo",
+
     "dijit/form/HorizontalRule",
     "dijit/form/HorizontalRuleLabels",
     "dijit/form/TextBox",
@@ -57,18 +71,124 @@ function (
     Keyboard,
     Selection,
     Geoprocessor,
-    HomeButton
+    HomeButton,
+    ArcGISDynamicMapServiceLayer,
+    FilteringSelect,
+    Select,
+    win,
+    TextBox,
+    HorizontalSlider,
+    FeatureLayer,
+    Graphic,
+    FeatureSet,
+    array,
+    esriConfig,
+    Legend,
+    IdentityManager,
+    ServerInfo
     ) {
     //parser.parse();
+    
+    esriConfig.defaults.io.proxyUrl = "/proxyDotNet/proxy.ashx";
+    esriConfig.defaults.io.alwaysUseProxy = true;
+    //esriConfig.defaults.io.corsEnabledServers.push("http://170.93.140.79/");
+    //esriConfig.defaults.io.corsEnabledServers.push("http://gisweb.wsscwater.com/");
+    //esriConfig.defaults.io.corsEnabledServers.push("http://gis.montgomerycountymd.gov/");
 
-    gp = new Geoprocessor("http://bmajor2.esri.com/arcgis/rest/directories/arcgisoutput/wssc_jdp/WSSCFindConflicts_GPServer/wssc_jdp_WSSCFindConflicts/WSSCFindConflicts");
+    var serverInfo = new esri.ServerInfo();
+    serverInfo.server = 'http://gisweb.wsscwater.com/ArcGIS/';
+    serverInfo.tokenServiceUrl = 'http://gisweb.wsscwater.com/ArcGIS/tokens/';
 
+    esri.id.registerServers([serverInfo]);
+
+    var conflictResults = function (r, m) {
+        console.log(r);
+        console.log(m);
+
+    };
+
+    //onClick 'Find Conflicts' Btn - fires off feature layers and GP service
+    var myButton = new Button({
+        label: "Find Conflicts",
+        onClick: function () {
+            //clear all layers from the map
+            //map.removeAllLayers();
+            //inLayerFeatureLayer.removeAllLayers();
+            //check dijit layers for its values
+            
+            var forLayerValue = registry.byId("forLayer").get("value");
+            console.log(registry.byId("forLayer").get("value"));
+
+            var inLayerValue = registry.byId("inLayer").get("value");
+            console.log(registry.byId("inLayer").get("value"));
+
+            var distanceValue = registry.byId("distanceSlider").get("value");
+            console.log(registry.byId("distanceSlider").get("value"));
+            //get all the values of the layers
+            //create a feature layer for each of the layers, FOR and IN
+            gp = new Geoprocessor("http://bmajor2.esri.com/arcgis/rest/services/wssc_jdp/WSSCFindConflictsTest/GPServer/WSSC%20Find%20Conflicts%20Test");
+
+            //create new feature layers
+            //FOR feature layer
+            var forLayerFeatureLayer = new
+                FeatureLayer(forLayerValue, {
+                    id: 'Organization'
+                });
+
+            var forLayerArray = [];
+            if (forLayerFeatureLayer.graphics) {
+                array.forEach(forLayerFeatureLayer.graphics, function (graphic) {
+                    console.log(graphic);
+                });
+            };
+
+            var fs1 = new FeatureSet();
+            fs1.features = forLayerFeatureLayer.graphics;
+
+           map.addLayer(forLayerFeatureLayer);
+            //IN feature layer
+            var inLayerFeatureLayer = new
+                FeatureLayer(inLayerValue, {
+                    id: 'Layer'
+                });
+
+            var inLayerArray = [];
+            if (inLayerFeatureLayer.graphics) {
+                array.forEach(inLayerFeatureLayer.graphics, function (graphic) {
+                    console.log(graphic);
+                });
+            };
+
+            var fs2 = new FeatureSet();
+            fs2.features = inLayerFeatureLayer.graphics;
+            map.addLayer(inLayerFeatureLayer);
+            registry.byId("conflictsDialog").hide();
+
+            var params = {
+                fs1: fs1,
+                fs2: fs2,
+                csd: distanceValue
+            };
+
+            gp.submitJob(params, conflictResults);
+
+            
+        }
+    }, "findConflictsBtn");
+     
     //map content
     map = new Map("mapDiv", {
-        center: [-80, 38.485],
-        zoom: 6,
+        center: [-77.0367, 38.8951],
+        zoom: 10,
         basemap: "streets"
     });
+
+    //legend
+    var legend = new Legend({
+       map: map
+    }, "legendDiv");
+    legend.startup();
+
     //map home button
     var home = new HomeButton({
         map: map
@@ -83,10 +203,11 @@ function (
         autoComplete: true,
         map: map,
     }, 'search');
-    geocoder.startup();
+    geocoder.startup();    
 
     //click legend tool
     on(dom.byId("legend"), "click", function (e) {
+        
         //if leftPane is displayed, hide leftPane and adjust others on legend onClick 
         if (domStyle.get(dom.byId("leftPane"), "display") === "block") {
             domStyle.set(dom.byId("leftPane"), "display", "none");            
@@ -121,7 +242,8 @@ function (
         }
     });
 
-    //data grid    
+    //data grid
+    //DUMMY DATA just for viewing purposes
     var data = [
         { department: "MC DOT", projectId: "AAABBB", conflictDpt: "WSSC", conflictProject:"Main St Dig", contact:"John Doe (222) 222-2222" },
         { department: "MC DOT", projectId: "AAABBB", conflictDpt: "PG DPW", conflictProject:"12-13-14", contact:"John Doe (222) 222-2222" },
@@ -182,55 +304,87 @@ function (
     });
     
     //drop down inputs: forOrg, forLayer, inOrd, inLayer
-    var dropDownData = new Memory({
-        data: [
-            { name: "Alabama", id: "AL" },
-            { name: "Alaska", id: "AK" },
-            { name: "American Samoa", id: "AS" },
-            { name: "Arizona", id: "AZ" },
-            { name: "Arkansas", id: "AR" },
-            { name: "Armed Forces Europe", id: "AE" },
-            { name: "Armed Forces Pacific", id: "AP" },
-            { name: "Armed Forces the Americas", id: "AA" },
-            { name: "California", id: "CA" },
-            { name: "Colorado", id: "CO" },
-            { name: "Connecticut", id: "CT" },
-            { name: "Delaware", id: "DE" }
+    var layersConfig = {
+        "": [],
+        "WSSC": [
+            { label: "Sewer Manhole Replacements", value: "http://gisweb.wsscwater.com/ArcGIS/rest/services/AgencyProjetCoordination/WSSCAPCLayers/MapServer/0" },
+            { label: "Sewer Pipe  Replacements", value: "http://gisweb.wsscwater.com/ArcGIS/rest/services/AgencyProjetCoordination/WSSCAPCLayers/MapServer/1" },
+            { label: "Water Meter Vault Replacements", value: "http://gisweb.wsscwater.com/ArcGIS/rest/services/AgencyProjetCoordination/WSSCAPCLayers/MapServer/2" },
+            { label: "Water Main Projects", value: "http://gisweb.wsscwater.com/ArcGIS/rest/services/AgencyProjetCoordination/WSSCAPCLayers/MapServer/3" },
+            { label: "County Boundaries", value: "http://gisweb.wsscwater.com/ArcGIS/rest/services/AgencyProjetCoordination/WSSCAPCLayers/MapServer/4" }
+        ],
+        "SHA": [
+            { label: "APC DATA", value: "http://170.93.140.79/ArcGIS/rest/services/WSSC/SHA_APC_Data/MapServer/0" }
+        ],
+        "MC DOT": [
+            { label: "Planned", value: "http://gis.montgomerycountymd.gov/ArcGIS/rest/services/DOT/moco_planned/MapServer/0" },
+            { label: "In-Progress", value: "http://gis.montgomerycountymd.gov/ArcGIS/rest/services/DOT/moco_in_progress/MapServer/0" },
+            { label: "Moratorium", value: "http://gis.montgomerycountymd.gov/ArcGIS/rest/services/DOT/moco_moratorium/MapServer/0" }
+        ],
+        "Municipalities Paving": [
+            { label: "Municipalities Paving Projects", value: "http://gisweb.wsscwater.com/ArcGIS/rest/services/AgencyProjetCoordination/Municipatilies_Paving/MapServer/0" }
         ]
+    };
+
+    //"FOR" div
+    var forOptions = [];
+    for (var forOrganization in layersConfig) {
+        forOptions.push({
+            label: forOrganization,
+            value: forOrganization
+        });
+    }; console.log(forOptions);
+
+    var forOrgSelect = new Select({
+        options: forOptions
+    }, "forOrg");
+    forOrgSelect.startup();
+
+    var forLayerSelect = new Select({
+       // disabled: "disabled"
+    },"forLayer");
+
+    on(forOrgSelect, "change", function (value) {
+        //populate value based on selection
+        console.log(value);
+        var forLayerOptions = layersConfig[value];
+        if (forLayerOptions) {
+            forLayerSelect.set("options", forLayerOptions);
+            forLayerSelect.set("value", forLayerOptions[0].label);
+            console.log(forLayerOptions);
+        };
     });
 
-    var forOrgCB = new ComboBox({
-        id: "forOrg",
-        name: "state",
-        value: "MC DOT",
-        store: dropDownData,
-        searchAttr: "name"
-    }, "forOrg");
+    //"IN" div
+    var inOptions = [];
+    for (var inOrganization in layersConfig) {
+        inOptions.push({
+            label: inOrganization,
+            value: inOrganization
+        });
+    }; console.log(inOptions);
 
-    var forLayerCB = new ComboBox({
-        id: "forLayer",
-        name: "state",
-        value: "Layer",
-        store: dropDownData,
-        searchAttr: "name"
-    }, "forLayer");
-
-    var inOrgCB = new ComboBox({
-        id: "inOrg",
-        name: "state",
-        value: "PGC Dot",
-        store: dropDownData,
-        searchAttr: "name"
+    var inOrgSelect = new Select({
+        options: inOptions
     }, "inOrg");
+    inOrgSelect.startup();
 
-    var inLayerCB = new ComboBox({
-        id: "inLayer",
-        name: "state",
-        value: "Layer",
-        store: dropDownData,
-        searchAttr: "name"
+    var inLayerSelect = new Select({
+        // disabled: "disabled"
     }, "inLayer");
 
+    on(inOrgSelect, "change", function (value) {
+        //populate value based on selection
+        console.log(value);
+        var inLayerOptions = layersConfig[value];
+        if (inLayerOptions) {
+            inLayerSelect.set("options", inLayerOptions);
+            inLayerSelect.set("value", inLayerOptions[0].label);
+            console.log(inLayerOptions);
+        };
+    });
+
+    //Hides Find Conflicts Dialog
     var cancelBtn = new Button({
         label: "Close",
         onClick: function () {

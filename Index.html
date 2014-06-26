@@ -114,7 +114,7 @@
                                                      style="width:400px;"
                                                      name="horizontalSlider"
                                                      data-dojo-type="dijit/form/HorizontalSlider"
-                                                     data-dojo-props="value:7,
+                                                     data-dojo-props="value:50,
                                                      minimum: 0,
                                                      maximum: 500,
                                                      discreteValues:11,
@@ -147,7 +147,7 @@
                         </table>
                     </div>
                     <!-- Find Conflicts Submit button -->
-                    <div><button data-dojo-type="dijit/form/Button" type="submit" id="findConflictsBtn">Find Conflicts</button></div>
+                    <div><button type="submit" id="findConflictsBtn">Find Conflicts</button></div>
                     <!-- Find Conflicts Cancel button -->
                     <div class="dijitDialogPaneActionBar">
                         <button id="cancel"></button>
@@ -159,16 +159,7 @@
         </div>
 
         <div id="leftPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left'">
-            <div id="legendDiv">
-                <table>
-                    <tr>
-                        <td>Legend</td>
-                    </tr>
-                    <tr>
-                        <td>Stuff goes in here</td>
-                    </tr>
-                </table>
-            </div>
+            <div id="legendDiv"></div>
         </div>
 
         <!-- Data Grid -->

@@ -66,21 +66,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\conflictsStyle.css" />
-    <Content Include="images\changeBasemap.png" />
-    <Content Include="images\findConflicts.png" />
-    <Content Include="images\legend.png" />
     <Content Include="Index.html" />
     <Content Include="js\application\mainApp.js" />
-    <Content Include="js\application\widgets\changeBasemap.js" />
-    <Content Include="js\application\widgets\findConflicts.js" />
     <Content Include="js\application\widgets\geocoder.js" />
-    <Content Include="js\application\widgets\legend.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="images\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
