@@ -126,7 +126,7 @@ function (
             console.log(registry.byId("distanceSlider").get("value"));
             //get all the values of the layers
             //create a feature layer for each of the layers, FOR and IN
-            gp = new Geoprocessor("http://bmajor2.esri.com/arcgis/rest/services/wssc_jdp/WSSCFindConflicts/GPServer/WSSC%20Find%20Conflicts");
+            gp = new Geoprocessor("http://bmajor2.esri.com/arcgis/rest/services/wssc_jdp/WSSCFindConflictsTest/GPServer/WSSC%20Find%20Conflicts%20Test");
 
             //create new feature layers
             //FOR feature layer
